@@ -44,7 +44,7 @@ export class MultiplicationTable {
           indices.push(currentRow.length)
         }
         else {
-          if (currentRow.length !== indices[j + 1] && j !== i) currentRow += ' '
+          while (currentRow.length !== indices[j + 1] && j !== i) currentRow += ' '
         }
         (j === i && j !== expressions.length - 1) ? currentRow += '\n' : currentRow += '  '
       }
