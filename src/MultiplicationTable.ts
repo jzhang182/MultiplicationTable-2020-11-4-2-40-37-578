@@ -18,7 +18,8 @@ export class MultiplicationTable {
   private generateExpressions(start: number, end: number): Expression[][] {
     const expressions: Expression[][] = []
     for (let i = 0; i <= end - start; i++) {
-      expressions.push([])
+      // expressions.push([])
+      expressions[i] = []
       for (let j = 0; j <= i; j++) {
         const expression: Expression = {
           firstFactor: start + j,
@@ -33,16 +34,27 @@ export class MultiplicationTable {
 
   private generateTable(expressions: Expression[][]): string {
     let ret = ''
-    for (let i = 0; i < expressions.length; i++) {
+    const indices: number[] = []
+    indices.push(0)
+    for (let i = expressions.length - 1; i >= 0; i--) {
+      let currentRow = ''
       for (let j = 0; j <= i; j++) {
-        ret += `${expressions[i][j].firstFactor}*${expressions[i][j].secondFactor}=${expressions[i][j].product}`
-
-        if (j === i && j !== expressions.length - 1) ret += '\n'
-        else ret += '  '
+        currentRow += `${expressions[i][j].firstFactor}*${expressions[i][j].secondFactor}=${expressions[i][j].product}`
+        if (i === expressions.length - 1) {
+          indices.push(currentRow.length)
+        }
+        else {
+          if (currentRow.length !== indices[j + 1] && j !== i) currentRow += ' '
+        }
+        (j === i && j !== expressions.length - 1) ? currentRow += '\n' : currentRow += '  '
       }
+      ret = currentRow + ret
     }
-    ret = ret.trimEnd()
-    return ret
+    // const ret = expressions.map(row => row
+    //   .map(({ firstFactor, secondFactor, product }) => `${firstFactor}*${secondFactor}=${product}`)
+    //   .join('  '))
+    //   .join('\n')
+    return ret.trimEnd()
   }
 }
 
